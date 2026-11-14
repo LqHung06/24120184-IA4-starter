@@ -76,3 +76,11 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** Changed src/useProducts.js: the request is sent 300 ms after the last change to the search text (setTimeout inside the effect, cleared in its cleanup). The loading status still shows at once, and the old cards stay on screen. Measured in headless Chromium: typing "cap" slowly sent 3 requests (c, ca, cap) before the change and 1 request (cap) after it; the Cap card appeared about 300 ms later. Tests: 19 of 19 pass; lint silent. The first page load is also 300 ms slower.
 - **Changed:** the search waits 300 ms after the last keystroke before calling the API
 - **Rejected:** none
+
+## 9. Choice of Bootstrap usage for part C
+- **Commit before:** b0e85df
+- **Commit after:** b0e85df
+- **Request:** "Do not edit any file yet. Question about IA#4 part C (brief-ia4.md): we need to use one CSS framework. Between (a) installing Bootstrap 5.3.3 and using plain Bootstrap CSS classes on our existing HTML elements, or (b) using react-bootstrap components, which way do you propose? Give the trade-off for this brief specifically: the rule that labels stay <label> and buttons stay <button>, the dependency constraint, and the 11 + 8 checks in checks/. End with the one option you recommend."
+- **Result:** The assistant recommended (a): plain Bootstrap 5.3.3 classes without react-bootstrap, because react-bootstrap adds an extra package (violating brief-ia4 C1) and wraps inputs in component abstractions instead of native elements (violating C3). Recommendation accepted.
+- **Changed:** none
+- **Rejected:** none
