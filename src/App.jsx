@@ -34,7 +34,7 @@ export default function App() {
         {phase === 'error' && <button type="button" onClick={retry}>Retry</button>}
         <ProductList products={products} onAddToCart={addToCart} />
         <SavedPanel />
-        <CartSummary lines={lines} />
+        <CartSummary lines={lines} onOrderPlaced={() => setLines([])} />
       </main>
     </WishlistProvider>
   );
