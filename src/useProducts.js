@@ -13,24 +13,29 @@ export function useProducts(query) {
     const controller = new AbortController();
     setPhase('loading'); // products stay on screen while this runs
 
-    const params = new URLSearchParams({ q: query });
-    fetch(`/api/products?${params}`, { signal: controller.signal })
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((list) => {
-        if (controller.signal.aborted) return;
-        setProducts(list);
-        setPhase('ready');
-      })
-      .catch(() => {
-        if (controller.signal.aborted) return; // dropped answer, not a failure
-        setProducts([]);
-        setPhase('error');
-      });
+    // Wait 300 ms after the last change before asking the API; a search that is
+    // typed over within that time never reaches the network.
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams({ q: query });
+      fetch(`/api/products?${params}`, { signal: controller.signal })
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((list) => {
+          if (controller.signal.aborted) return;
+          setProducts(list);
+          setPhase('ready');
+        })
+        .catch(() => {
+          if (controller.signal.aborted) return; // dropped answer, not a failure
+          setProducts([]);
+          setPhase('error');
+        });
+    }, 300);
 
     return () => {
+      clearTimeout(timer);
       controller.abort();
     };
   }, [query, attempt]);
