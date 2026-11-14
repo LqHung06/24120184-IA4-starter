@@ -1,10 +1,35 @@
-// Replace this file — and add the components the brief asks for — with what
-// your assistant writes from brief.md. Keep the default export named App.
+import { useState } from 'react';
+import SearchBox from './components/SearchBox.jsx';
+import ProductList from './components/ProductList.jsx';
+import CartSummary from './components/CartSummary.jsx';
+import { useProducts } from './useProducts.js';
+
 export default function App() {
+  const [search, setSearch] = useState('');
+  const [lines, setLines] = useState([]); // [{ id, price, qty }] — kept even when hidden by search
+  const { products, phase, retry } = useProducts(search);
+
+  function addToCart(product) {
+    setLines((current) => {
+      const line = current.find((l) => l.id === product.id);
+      if (!line) return [...current, { id: product.id, price: product.price, qty: 1 }];
+      return current.map((l) => (l.id === product.id ? { ...l, qty: l.qty + 1 } : l));
+    });
+  }
+
+  let status = '';
+  if (phase === 'loading') status = 'Loading products…';
+  else if (phase === 'error') status = 'Could not load products.';
+  else if (products.length === 0) status = 'No products match.';
+
   return (
     <main>
       <h1>Shop</h1>
-      <p>Nothing here yet. Give <code>brief.md</code> to your assistant.</p>
+      <SearchBox value={search} onChange={setSearch} />
+      <p role="status">{status}</p>
+      {phase === 'error' && <button type="button" onClick={retry}>Retry</button>}
+      <ProductList products={products} onAddToCart={addToCart} />
+      <CartSummary lines={lines} />
     </main>
   );
 }
