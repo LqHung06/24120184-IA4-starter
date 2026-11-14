@@ -1,12 +1,8 @@
-/* Starting styles — your assistant may change this file. */
+/* Starting styles — layout is now provided by Bootstrap container and grid. */
 * { box-sizing: border-box; }
 body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.5; color: #1d1d1f; background: #fafafa; }
-main { max-width: 960px; margin: 0 auto; padding: 16px 16px 96px; }
 button { min-height: 44px; padding: 0 14px; font: inherit; cursor: pointer; }
 button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; font-weight: 600; }
-input { font: inherit; min-height: 44px; padding: 0 10px; width: 100%; max-width: 360px; }
-.search label { display: block; margin-bottom: 4px; }
-.products { list-style: none; padding: 0; display: grid; gap: 12px; grid-template-columns: 1fr; }
 .card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; }
 .card h2 { font-size: 1.05rem; margin: 0 0 4px; }
 .price { margin: 0 0 8px; }

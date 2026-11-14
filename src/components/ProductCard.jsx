@@ -8,21 +8,23 @@ export default function ProductCard({ product, onAddToCart }) {
   const saved = isSaved(product.id);
 
   return (
-    <li className="card">
-      <h2>{product.name}</h2>
-      <p className="price">{vnd(product.price)}</p>
-      <div className="actions">
-        <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-          Details
-        </button>
-        <button type="button" onClick={() => onAddToCart(product)}>
-          Add to cart
-        </button>
-        <button type="button" aria-pressed={saved} onClick={() => toggle(product)}>
-          Save
-        </button>
+    <li className="col-12 col-md-6 col-lg-4">
+      <div className="card">
+        <h2>{product.name}</h2>
+        <p className="price">{vnd(product.price)}</p>
+        <div className="actions">
+          <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+            Details
+          </button>
+          <button type="button" onClick={() => onAddToCart(product)}>
+            Add to cart
+          </button>
+          <button type="button" aria-pressed={saved} onClick={() => toggle(product)}>
+            Save
+          </button>
+        </div>
+        {open && <p className="description">{product.description}</p>}
       </div>
-      {open && <p className="description">{product.description}</p>}
     </li>
   );
 }

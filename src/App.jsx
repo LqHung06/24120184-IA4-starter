@@ -28,10 +28,12 @@ export default function App() {
   return (
     <WishlistProvider>
       <Header />
-      <main>
+      <main className="container pb-5">
         <SearchBox value={search} onChange={setSearch} />
-        <p role="status">{status}</p>
-        {phase === 'error' && <button type="button" onClick={retry}>Retry</button>}
+        <p role="status" className="text-body-secondary">{status}</p>
+        {phase === 'error' && (
+          <button type="button" className="btn btn-warning mb-3" onClick={retry}>Retry</button>
+        )}
         <ProductList products={products} onAddToCart={addToCart} />
         <SavedPanel />
         <CartSummary lines={lines} onOrderPlaced={() => setLines([])} />
