@@ -68,3 +68,11 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** Changed src/components/CheckoutForm.jsx lines 69, 82 and 97 to remove role="alert". Checks: 19 of 19 pass; lint silent. By hand: row 16 passes (order placed, cart 0 items, URL unchanged); row 17 passes (empty submit shows messages, Phone 090123456 updates phone message); row 18 passes (tab order and focus outline visible).
 - **Changed:** none
 - **Rejected:** Rejected the assistant's addition of role="alert" on field error messages and empty-cart message in src/components/CheckoutForm.jsx lines 69, 82 and 97. Reason: brief-ia4.md F2 specifies plain messages linked via aria-describedby and aria-invalid="true"; role="alert" was not requested and turns each message into an assertive live region that interrupts screen reader users prematurely.
+
+## 8. Debounce 300 ms for search
+- **Commit before:** 5523723
+- **Commit after:** cf27547
+- **Request:** "Add a 300 ms debounce to useProducts: wait 300 ms after the last keystroke before sending the fetch request, cancelling any pending timer in the effect cleanup."
+- **Result:** Changed src/useProducts.js: the request is sent 300 ms after the last change to the search text (setTimeout inside the effect, cleared in its cleanup). The loading status still shows at once, and the old cards stay on screen. Measured in headless Chromium: typing "cap" slowly sent 3 requests (c, ca, cap) before the change and 1 request (cap) after it; the Cap card appeared about 300 ms later. Tests: 19 of 19 pass; lint silent. The first page load is also 300 ms slower.
+- **Changed:** the search waits 300 ms after the last keystroke before calling the API
+- **Rejected:** none

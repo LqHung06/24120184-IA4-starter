@@ -41,3 +41,10 @@ why, and gives the sentence sent when changed or rejected.
 - **Decision:** kept
 - **What decided it:** checks I5 and I7, which read the form's text; brief-ia4 F3 and F4; Done means row 16 by hand (confirmation shown, cart 0 items, address bar unchanged)
 - **Why:** The brief places the checkout inside the cart and asks for these messages in the form. The confirmation is a plain `<p>`, not a status element, so the page keeps one status line.
+
+### 7. Search waits 300 ms before calling the API
+- **Where:** commit cf27547, `src/useProducts.js` lines 18–35
+- **Decision:** changed
+- **What decided it:** Measured in headless Chromium: typing `cap` slowly sent 3 requests (`c`, `ca`, `cap`) without the debounce and 1 request (`cap`) with it. Done means row 8: one request per text typed, or fewer with a debounce.
+- **Why:** Fewer requests, and fewer answers that have to be dropped. The cost is about 300 ms more before the results show, which the brief allows.
+- **Sentence sent:** "Add a 300 ms debounce to useProducts: wait 300 ms after the last keystroke before sending the fetch request, cancelling any pending timer in the effect cleanup."
