@@ -2,7 +2,10 @@ import { useState } from 'react';
 import SearchBox from './components/SearchBox.jsx';
 import ProductList from './components/ProductList.jsx';
 import CartSummary from './components/CartSummary.jsx';
+import Header from './components/Header.jsx';
+import SavedPanel from './components/SavedPanel.jsx';
 import { useProducts } from './useProducts.js';
+import { WishlistProvider } from './WishlistContext.jsx';
 
 export default function App() {
   const [search, setSearch] = useState('');
@@ -23,13 +26,16 @@ export default function App() {
   else if (products.length === 0) status = 'No products match.';
 
   return (
-    <main>
-      <h1>Shop</h1>
-      <SearchBox value={search} onChange={setSearch} />
-      <p role="status">{status}</p>
-      {phase === 'error' && <button type="button" onClick={retry}>Retry</button>}
-      <ProductList products={products} onAddToCart={addToCart} />
-      <CartSummary lines={lines} />
-    </main>
+    <WishlistProvider>
+      <Header />
+      <main>
+        <SearchBox value={search} onChange={setSearch} />
+        <p role="status">{status}</p>
+        {phase === 'error' && <button type="button" onClick={retry}>Retry</button>}
+        <ProductList products={products} onAddToCart={addToCart} />
+        <SavedPanel />
+        <CartSummary lines={lines} />
+      </main>
+    </WishlistProvider>
   );
 }
