@@ -28,3 +28,11 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** No file changed. The assistant answered each row. Already in the full plan: the four files in src/components/, fetch only in src/useProducts.js, src/WishlistContext.jsx with useWishlist() called by ProductCard, errors shown only when submitted is true. Confirmed: App.jsx keeps export default function App; ProductCard receives exactly product and onAddToCart as props; form errors are plain values computed during render, with no useState and no useEffect for them.
 - **Changed:** none
 - **Rejected:** none
+
+## 3. Session 6 page
+- **Commit before:** 6efc092
+- **Commit after:** 8ce0d22
+- **Request:** "Implement brief.md according to the approved plan. Do not do the IA#4 part yet."
+- **Result:** Created src/App.jsx, src/useProducts.js, src/format.js, src/components/SearchBox.jsx, ProductList.jsx, ProductCard.jsx, CartSummary.jsx; src/index.css styled list, cards and cart. Checks: 11 of 11 session 6 pass (C1–C11), lint silent. By hand, rows 4–10 and 12 pass; row 11 checked in code.
+- **Changed:** none
+- **Rejected:** none
