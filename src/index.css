@@ -1,11 +1,6 @@
-/* Starting styles — layout is now provided by Bootstrap container and grid. */
+/* Bootstrap provides the layout and cards. Button 44px min-height rule configured. */
 * { box-sizing: border-box; }
 body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.5; color: #1d1d1f; background: #fafafa; }
-button { min-height: 44px; padding: 0 14px; font: inherit; cursor: pointer; }
-button[aria-pressed="true"] { background: #1d1d1f; color: #fff; border-color: #1d1d1f; font-weight: 600; }
-.card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 12px; }
-.card h2 { font-size: 1.05rem; margin: 0 0 4px; }
-.price { margin: 0 0 8px; }
-.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { --bs-btn-padding-y: 0.6rem; min-height: 44px; }
 .cart { margin-top: 24px; border-top: 1px solid #ddd; padding-top: 12px; }
 .cart h2 { font-size: 1.1rem; }
