@@ -10,7 +10,7 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false); // has Place order been pressed at least once?
   const [confirmation, setConfirmation] = useState('');
 
   const nameError = name.trim() === '' ? NAME_MSG : '';
@@ -37,7 +37,7 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
+    event.preventDefault(); // never reload the page or put the fields in the address bar
     setSubmitted(true);
     if (nameError || phoneError || cartError) {
       setConfirmation('');
@@ -53,50 +53,53 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
   }
 
   return (
-    <form aria-label="Checkout" className="checkout" onSubmit={handleSubmit}>
-      {confirmation && <p>{confirmation}</p>}
+    <form aria-label="Checkout" onSubmit={handleSubmit}>
+      {confirmation && <p className="alert alert-success">{confirmation}</p>}
 
-      <div className="field">
-        <label htmlFor="checkout-name">Name</label>
+      <div className="mb-3">
+        <label htmlFor="checkout-name" className="form-label">Name</label>
         <input
           id="checkout-name"
           type="text"
+          className={showName ? 'form-control is-invalid' : 'form-control'}
           value={name}
           onChange={handleNameChange}
           aria-invalid={showName ? 'true' : undefined}
           aria-describedby={showName ? 'checkout-name-error' : undefined}
         />
-        {showName && <p id="checkout-name-error">{nameError}</p>}
+        {showName && <p id="checkout-name-error" className="invalid-feedback d-block">{nameError}</p>}
       </div>
 
-      <div className="field">
-        <label htmlFor="checkout-phone">Phone</label>
+      <div className="mb-3">
+        <label htmlFor="checkout-phone" className="form-label">Phone</label>
         <input
           id="checkout-phone"
           type="tel"
+          className={showPhone ? 'form-control is-invalid' : 'form-control'}
           value={phone}
           onChange={handlePhoneChange}
           aria-invalid={showPhone ? 'true' : undefined}
           aria-describedby={showPhone ? 'checkout-phone-error' : undefined}
         />
-        {showPhone && <p id="checkout-phone-error">{phoneError}</p>}
+        {showPhone && <p id="checkout-phone-error" className="invalid-feedback d-block">{phoneError}</p>}
       </div>
 
-      <div className="field">
-        <label htmlFor="checkout-note">Note (optional)</label>
+      <div className="mb-3">
+        <label htmlFor="checkout-note" className="form-label">Note (optional)</label>
         <textarea
           id="checkout-note"
+          className="form-control"
           maxLength={NOTE_MAX}
           value={note}
           onChange={handleNoteChange}
           aria-describedby="checkout-note-count"
         />
-        <span id="checkout-note-count" className="counter">{note.length}/{NOTE_MAX}</span>
+        <span id="checkout-note-count" className="form-text">{note.length}/{NOTE_MAX}</span>
       </div>
 
-      {showCart && <p>{cartError}</p>}
+      {showCart && <p className="alert alert-warning">{cartError}</p>}
 
-      <button type="submit">Place order</button>
+      <button type="submit" className="btn btn-success">Place order</button>
     </form>
   );
 }
