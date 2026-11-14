@@ -60,3 +60,10 @@ why, and gives the sentence sent when changed or rejected.
 - **Decision:** kept
 - **What decided it:** Done means row 13 (`git diff 9386479 -- package.json vite.config.js` shows only the `bootstrap` line; `vite.config.js` is unchanged) and row 19 (checked in headless Chromium with the network blocked: styled, no sideways scroll at 360, 768 or 1280 px, smallest button 45.2 px, 1, 2 and 3 product columns)
 - **Why:** The framework comes from npm, so the page still styles offline, as brief-ia4 C1 asks. The Bootstrap import comes before `index.css`. No HTML element was changed; labels and buttons stay as they were.
+
+### 10. Button minimum height 44 px configured via Bootstrap CSS variable
+- **Where:** commit 5142730, `src/index.css` line 3
+- **Decision:** changed
+- **What decided it:** Done means row 19 ("buttons at least 44 px tall"). When Bootstrap classes (.btn) were applied, DevTools Elements panel showed computed button heights of 38 px, failing the 44 px touch-target requirement.
+- **Why:** Touch targets must meet the 44 px accessibility minimum required by brief-ia4.md C2. Setting `--bs-btn-padding-y: 0.6rem; min-height: 44px` on `.btn` leverages Bootstrap's button padding variable to ensure all buttons (Details, Add to cart, Save, Place order) achieve at least 44 px height while preserving framework visual hierarchy.
+- **Sentence sent:** "Done means row 19: Bootstrap buttons are only 38 px tall. In src/index.css, set --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn so every button is at least 44 px tall."

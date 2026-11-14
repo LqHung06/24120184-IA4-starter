@@ -92,3 +92,27 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** package.json gained \"bootstrap\": \"5.3.3\" at line 16, package-lock.json updated, src/main.jsx line 3 imported bootstrap/dist/css/bootstrap.min.css. Tests: 19 of 19 pass, lint silent.
 - **Changed:** none
 - **Rejected:** none
+
+## 11. Layout with Bootstrap classes (part C, step 1)
+- **Commit before:** cc8d649
+- **Commit after:** f939d5d
+- **Request:** "IA#4 part C (brief-ia4.md C1-C3), step 1 of 3: layout. Bootstrap 5.3.3 is installed from npm and imported in src/main.jsx; use plain Bootstrap CSS classes only, no new package, no react-bootstrap, no Bootstrap JavaScript. Change only these files: src/App.jsx, src/components/Header.jsx, src/components/SearchBox.jsx, src/components/ProductList.jsx, src/components/ProductCard.jsx (only the <li> wrapper), src/index.css. 1. App.jsx: <main className=\"container pb-5\">. Keep the role=\"status\" paragraph as the only status element, give it className=\"text-body-secondary\". The Retry button becomes className=\"btn btn-warning mb-3\". 2. Header.jsx: <header className=\"container pt-3\">, <h1 className=\"display-6 mb-1\">Shop</h1>, <p className=\"text-body-secondary\">Saved: {saved.length}</p>. Keep the text \"Saved: N\" in a single text node sequence exactly as it is now. 3. SearchBox.jsx: wrapper className=\"mb-3 col-12 col-md-6\"; <label className=\"form-label\"> keeps htmlFor and the text \"Search products\"; the <input type=\"search\"> gets className=\"form-control\". Keep id and type. 4. ProductList.jsx: <ul aria-label=\"Products\" className=\"row g-3 list-unstyled p-0 mb-4\">. Keep key={product.id}. 5. ProductCard.jsx: the <li> gets className=\"col-12 col-md-6 col-lg-4\". Do not change anything else in this file yet. 6. src/index.css: delete every rule that these classes now replace (main, header, .products and both of its @media rules, .search label, input). Keep only what is still needed. Rules: keep every element the briefs ask for (<h1>, <label>, <button>, <ul aria-label=\"Products\">, one <li> per product). Do not edit checks/, mock/, vite.config.js, eslint.config.js, index.html, public/ or package.json. No eslint-disable. Then run npm test and npm run lint and report both results."
+- **Result:** Files touched: src/App.jsx, src/components/Header.jsx, src/components/SearchBox.jsx, src/components/ProductList.jsx, src/components/ProductCard.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Row 19 measured in headless Chromium with all external requests blocked: at 360, 768 and 1280 px there is no sideways scroll, smallest button is 44 px, and products display in 1, 2 and 3 columns.
+- **Changed:** none
+- **Rejected:** none
+
+## 12. Cards, buttons and the Saved panel (part C, step 2)
+- **Commit before:** f939d5d
+- **Commit after:** b69cdee
+- **Request:** "IA#4 part C, step 2 of 3: product cards, buttons and the Saved panel. Plain Bootstrap 5.3.3 classes only, no new package. Change only src/components/ProductCard.jsx, src/components/SavedPanel.jsx and src/index.css. 1. ProductCard.jsx: inside the existing <li>, wrap the content in <div className=\"card h-100\"><div className=\"card-body\">...</div></div>. The name stays an <h2> and gets className=\"card-title h5\". The price <p> gets className=\"card-text fw-semibold\". The description <p> gets className=\"card-text text-body-secondary mt-2 mb-0\". The buttons container gets className=\"d-flex flex-wrap gap-2\". 2. Buttons, all still real <button type=\"button\"> with their current accessible names and attributes: Details: className=\"btn btn-outline-primary\", keep aria-expanded; Add to cart: className=\"btn btn-primary\"; Save: className={saved ? 'btn btn-dark' : 'btn btn-outline-dark'}, keep aria-pressed={saved} and the visible text exactly \"Save\". 3. SavedPanel.jsx: <section aria-label=\"Saved\" className=\"mb-4\">; with items, <ul className=\"list-group\"> and <li className=\"list-group-item\">; with none, <p className=\"text-body-secondary mb-0\">. Rules: keep every element the briefs ask for. Do not edit checks/, mock/, vite.config.js, eslint.config.js, index.html, public/ or package.json. Then run npm test and npm run lint and report both results."
+- **Result:** Files touched: src/components/ProductCard.jsx, src/components/SavedPanel.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output.
+- **Changed:** none
+- **Rejected:** none
+
+## 13. Cart and checkout form with 44 px button height (part C, step 3)
+- **Commit before:** b69cdee
+- **Commit after:** 5142730
+- **Request:** "Done means row 19: Bootstrap buttons are only 38 px tall. In src/index.css, set --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn so every button is at least 44 px tall."
+- **Result:** Files touched: src/components/CartSummary.jsx, src/components/CheckoutForm.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Rows 16 and 17 checked in Chromium: Hoodie added, Name An, Phone 0901234567, Place order shows confirmation, cart 0 items, URL unchanged; empty submit shows error styles with is-invalid and invalid-feedback d-block. Smallest button measured at 45.2 px in Chromium DevTools at 360, 768 and 1280 px.
+- **Changed:** in src/index.css, configured --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn because default Bootstrap buttons measured only 38 px in DevTools, failing Done means row 19
+- **Rejected:** none
