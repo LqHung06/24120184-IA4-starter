@@ -52,3 +52,19 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** Exactly line 6 added to src/index.css: button[aria-pressed="true"] with dark background, white bold text. Cap's pressed Save measured at 44 px high; an unpressed Save stays transparent/light. Checks I1–I3 pass; lint silent.
 - **Changed:** the pressed Save button now has a visible dark style. Reason: in row 14 the pressed Save looked identical to an unpressed one.
 - **Rejected:** none
+
+## 6. Checkout form (F1–F5)
+- **Commit before:** dde1110
+- **Commit after:** b6633d7
+- **Request:** "Implement part F of brief-ia4.md according to the approved plan: CheckoutForm inside CartSummary, with Name, Phone, and Note fields; preventDefault on submit; errors computed from fields during render; English messages as specified in F2–F4."
+- **Result:** Created src/components/CheckoutForm.jsx, changed CartSummary.jsx and App.jsx. Handled confirmation clearing on field edits and note counter linked via aria-describedby. The assistant added role="alert" to the three error paragraphs in lines 69, 82, and 97.
+- **Changed:** none
+- **Rejected:** none
+
+## 7. Revert role="alert" from checkout messages
+- **Commit before:** b6633d7
+- **Commit after:** c590044
+- **Request:** "Revert role=\"alert\" on the error messages in CheckoutForm.jsx: brief-ia4.md F2 specifies plain messages linked via aria-describedby and aria-invalid, not alert live regions."
+- **Result:** Changed src/components/CheckoutForm.jsx lines 69, 82 and 97 to remove role="alert". Checks: 19 of 19 pass; lint silent. By hand: row 16 passes (order placed, cart 0 items, URL unchanged); row 17 passes (empty submit shows messages, Phone 090123456 updates phone message); row 18 passes (tab order and focus outline visible).
+- **Changed:** none
+- **Rejected:** Rejected the assistant's addition of role="alert" on field error messages and empty-cart message in src/components/CheckoutForm.jsx lines 69, 82 and 97. Reason: brief-ia4.md F2 specifies plain messages linked via aria-describedby and aria-invalid="true"; role="alert" was not requested and turns each message into an assertive live region that interrupts screen reader users prematurely.
