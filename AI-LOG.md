@@ -49,7 +49,7 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Commit before:** bd8c67a
 - **Commit after:** 1a31580
 - **Request:** "Add a clear visual style for aria-pressed=\"true\" so users can recognize saved products without opening DevTools. Keep the button name \"Save\", the aria-pressed attribute, keyboard access and a minimum button height of 44 px. Change only what is necessary."
-- **Result:** Exactly line 6 added to src/index.css: button[aria-pressed="true"] with dark background, white bold text. Cap's pressed Save measured at 44 px high; an unpressed Save stays transparent/light. Checks I1–I3 pass; lint silent.
+- **Result:** Exactly line 6 added to src/index.css: button[aria-pressed="true"] with dark background, white bold text. Cap's pressed Save measured at 44 px high; an unpressed Save stays transparent/light. Checks I1–I3 pass; lint silent. (Note: in step C2 / commit b69cdee, this custom CSS rule was superseded by Bootstrap's btn-dark / btn-outline-dark classes on ProductCard.jsx line 34 while preserving the visible pressed decision).
 - **Changed:** the pressed Save button now has a visible dark style. Reason: in row 14 the pressed Save looked identical to an unpressed one.
 - **Rejected:** none
 
@@ -73,7 +73,7 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Commit before:** 5523723
 - **Commit after:** cf27547
 - **Request:** "Add a 300 ms debounce to useProducts: wait 300 ms after the last keystroke before sending the fetch request, cancelling any pending timer in the effect cleanup."
-- **Result:** Changed src/useProducts.js: the request is sent 300 ms after the last change to the search text (setTimeout inside the effect, cleared in its cleanup). The loading status still shows at once, and the old cards stay on screen. Measured in headless Chromium: typing "cap" slowly sent 3 requests (c, ca, cap) before the change and 1 request (cap) after it; the Cap card appeared about 300 ms later. Tests: 19 of 19 pass; lint silent. The first page load is also 300 ms slower.
+- **Result:** Changed src/useProducts.js: the request is sent 300 ms after the last change to the search text (setTimeout inside the effect, cleared in its cleanup). The loading status still shows at once, and the old cards stay on screen. Measured in headless Chromium: typing "cap" quickly (under 300 ms between keystrokes) sent 3 requests (c, ca, cap) before the change and only 1 request (cap) after it; typing slowly still sent 1 request for each pause longer than 300 ms. The Cap card appeared about 300 ms later. Tests: 19 of 19 pass; lint silent. The first page load is also 300 ms slower.
 - **Changed:** the search waits 300 ms after the last keystroke before calling the API
 - **Rejected:** none
 
@@ -97,7 +97,7 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Commit before:** cc8d649
 - **Commit after:** f939d5d
 - **Request:** "IA#4 part C (brief-ia4.md C1-C3), step 1 of 3: layout. Bootstrap 5.3.3 is installed from npm and imported in src/main.jsx; use plain Bootstrap CSS classes only, no new package, no react-bootstrap, no Bootstrap JavaScript. Change only these files: src/App.jsx, src/components/Header.jsx, src/components/SearchBox.jsx, src/components/ProductList.jsx, src/components/ProductCard.jsx (only the <li> wrapper), src/index.css. 1. App.jsx: <main className=\"container pb-5\">. Keep the role=\"status\" paragraph as the only status element, give it className=\"text-body-secondary\". The Retry button becomes className=\"btn btn-warning mb-3\". 2. Header.jsx: <header className=\"container pt-3\">, <h1 className=\"display-6 mb-1\">Shop</h1>, <p className=\"text-body-secondary\">Saved: {saved.length}</p>. Keep the text \"Saved: N\" in a single text node sequence exactly as it is now. 3. SearchBox.jsx: wrapper className=\"mb-3 col-12 col-md-6\"; <label className=\"form-label\"> keeps htmlFor and the text \"Search products\"; the <input type=\"search\"> gets className=\"form-control\". Keep id and type. 4. ProductList.jsx: <ul aria-label=\"Products\" className=\"row g-3 list-unstyled p-0 mb-4\">. Keep key={product.id}. 5. ProductCard.jsx: the <li> gets className=\"col-12 col-md-6 col-lg-4\". Do not change anything else in this file yet. 6. src/index.css: delete every rule that these classes now replace (main, header, .products and both of its @media rules, .search label, input). Keep only what is still needed. Rules: keep every element the briefs ask for (<h1>, <label>, <button>, <ul aria-label=\"Products\">, one <li> per product). Do not edit checks/, mock/, vite.config.js, eslint.config.js, index.html, public/ or package.json. No eslint-disable. Then run npm test and npm run lint and report both results."
-- **Result:** Files touched: src/App.jsx, src/components/Header.jsx, src/components/SearchBox.jsx, src/components/ProductList.jsx, src/components/ProductCard.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Row 19 measured in headless Chromium with all external requests blocked: at 360, 768 and 1280 px there is no sideways scroll, smallest button is 44 px, and products display in 1, 2 and 3 columns.
+- **Result:** Files touched: src/App.jsx, src/components/Header.jsx, src/components/SearchBox.jsx, src/components/ProductList.jsx, src/components/ProductCard.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Row 19 measured in headless Chromium with all external requests blocked: at 360, 768 and 1280 px there is no sideways scroll, smallest button is 44 px, and products display in 1, 2 and 3 columns. Note on scope: in src/components/ProductCard.jsx, the assistant also added an inner `<div className="card">` wrapper around the content, which exceeded the instruction to "only change the <li> wrapper, do not change anything else in this file yet". This extra wrapper was harmless and was cleanly replaced in step C2 (commit b69cdee) when the full Bootstrap card structure was implemented.
 - **Changed:** none
 - **Rejected:** none
 
@@ -109,10 +109,18 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Changed:** none
 - **Rejected:** none
 
-## 13. Cart and checkout form with 44 px button height (part C, step 3)
+## 13. Cart and checkout form with Bootstrap classes (part C, step 3)
+- **Commit before:** b69cdee
+- **Commit after:** 5142730
+- **Request:** "IA#4 part C, step 3 of 3: cart and checkout form. Plain Bootstrap 5.3.3 classes only, no new package. Change only src/components/CartSummary.jsx and src/components/CheckoutForm.jsx. 1. CartSummary.jsx: <aside aria-label=\"Cart\" className=\"card mb-4\"><div className=\"card-body\">...</div></aside>. The title stays an <h2> and gets className=\"card-title h5\". The item count and total paragraphs get className=\"card-text\". 2. CheckoutForm.jsx: <form aria-label=\"Checkout\" onSubmit={handleSubmit}>. Order confirmation paragraph gets className=\"alert alert-success\". Input fields: <div className=\"mb-3\">; labels get className=\"form-label\"; text/tel inputs get className={show* ? 'form-control is-invalid' : 'form-control'}; textarea gets className=\"form-control\"; note counter gets className=\"form-text\"; field errors get className=\"invalid-feedback d-block\"; empty-cart message gets className=\"alert alert-warning\". The Place order button gets className=\"btn btn-success\". Rules: keep every element the briefs ask for (real <form>, <label>, <input>, <textarea>, <button type=\"submit\">). Do not edit checks/, mock/, vite.config.js, eslint.config.js, index.html, public/ or package.json. Then run npm test and npm run lint and report both results."
+- **Result:** Files touched: src/components/CartSummary.jsx, src/components/CheckoutForm.jsx. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Rows 16 and 17 checked in Chromium: Hoodie added, Name An, Phone 0901234567, Place order shows confirmation, cart 0 items, URL unchanged; empty submit shows error styles with is-invalid and invalid-feedback d-block. Note: these changes were staged and committed together with the 44 px button height fix in commit 5142730.
+- **Changed:** none
+- **Rejected:** none
+
+## 14. Button minimum height 44 px configured via Bootstrap CSS variable
 - **Commit before:** b69cdee
 - **Commit after:** 5142730
 - **Request:** "Done means row 19: Bootstrap buttons are only 38 px tall. In src/index.css, set --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn so every button is at least 44 px tall."
-- **Result:** Files touched: src/components/CartSummary.jsx, src/components/CheckoutForm.jsx, src/index.css. npm test: 19 of 19 passed. npm run lint: exit 0, no output. Rows 16 and 17 checked in Chromium: Hoodie added, Name An, Phone 0901234567, Place order shows confirmation, cart 0 items, URL unchanged; empty submit shows error styles with is-invalid and invalid-feedback d-block. Smallest button measured at 45.2 px in Chromium DevTools at 360, 768 and 1280 px.
+- **Result:** Files touched: src/index.css only. Default Bootstrap button styles had reduced touch target heights to 38 px in DevTools; setting --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn brought button heights to 45.2 px at 360, 768 and 1280 px viewports. This fix was committed together with step C3 in commit 5142730 rather than as a separate commit.
 - **Changed:** in src/index.css, configured --bs-btn-padding-y: 0.6rem and min-height: 44px on .btn because default Bootstrap buttons measured only 38 px in DevTools, failing Done means row 19
 - **Rejected:** none

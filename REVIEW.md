@@ -5,10 +5,10 @@ Each entry links to an existing commit and file lines, states what decided it,
 why, and gives the sentence sent when changed or rejected.
 -->
 ### 1. Visible pressed state for the Save button
-- **Where:** commit 1a31580, `src/index.css` line 6
+- **Where:** commit 1a31580, `src/index.css` line 6; migrated at commit b69cdee, `src/components/ProductCard.jsx` line 34
 - **Decision:** changed
 - **What decided it:** Done means row 14 — after saving Cap, the Save button looked identical to an unsaved one. The saved state was only visible as `aria-pressed="true"` in DevTools.
-- **Why:** A visible pressed state lets the user recognize saved products without inspecting the DOM.
+- **Why:** A visible pressed state lets the user recognize saved products without inspecting the DOM. The design decision was maintained across changes: originally implemented as custom CSS (`button[aria-pressed="true"]`) in `src/index.css` line 6 at commit 1a31580; when Bootstrap was introduced in step C2 at commit b69cdee, the custom CSS rule was replaced by Bootstrap classes (`btn btn-dark` when saved, `btn btn-outline-dark` when not) in `src/components/ProductCard.jsx` line 34.
 - **Sentence sent:** "Add a clear visual style for aria-pressed=\"true\" so users can recognize saved products without opening DevTools. Keep the button name \"Save\", the aria-pressed attribute, keyboard access and a minimum button height of 44 px. Change only what is necessary."
 
 ### 2. Wishlist stores product names with IDs
@@ -45,7 +45,7 @@ why, and gives the sentence sent when changed or rejected.
 ### 7. Search waits 300 ms before calling the API
 - **Where:** commit cf27547, `src/useProducts.js` lines 18–35
 - **Decision:** changed
-- **What decided it:** Measured in headless Chromium: typing `cap` slowly sent 3 requests (`c`, `ca`, `cap`) without the debounce and 1 request (`cap`) with it. Done means row 8: one request per text typed, or fewer with a debounce.
+- **What decided it:** Measured in headless Chromium: typing `cap` quickly (under 300 ms between keystrokes) sent 3 requests (`c`, `ca`, `cap`) without the debounce and only 1 request (`cap`) with it; typing slowly still sent 1 request for each pause longer than 300 ms. Done means row 8: one request per text typed, or fewer with a debounce.
 - **Why:** Fewer requests, and fewer answers that have to be dropped. The cost is about 300 ms more before the results show, which the brief allows.
 - **Sentence sent:** "Add a 300 ms debounce to useProducts: wait 300 ms after the last keystroke before sending the fetch request, cancelling any pending timer in the effect cleanup."
 
