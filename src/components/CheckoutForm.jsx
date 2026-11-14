@@ -66,7 +66,7 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
           aria-invalid={showName ? 'true' : undefined}
           aria-describedby={showName ? 'checkout-name-error' : undefined}
         />
-        {showName && <p id="checkout-name-error" role="alert">{nameError}</p>}
+        {showName && <p id="checkout-name-error">{nameError}</p>}
       </div>
 
       <div className="field">
@@ -79,7 +79,7 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
           aria-invalid={showPhone ? 'true' : undefined}
           aria-describedby={showPhone ? 'checkout-phone-error' : undefined}
         />
-        {showPhone && <p id="checkout-phone-error" role="alert">{phoneError}</p>}
+        {showPhone && <p id="checkout-phone-error">{phoneError}</p>}
       </div>
 
       <div className="field">
@@ -94,7 +94,7 @@ export default function CheckoutForm({ itemCount, total, onOrderPlaced }) {
         <span id="checkout-note-count" className="counter">{note.length}/{NOTE_MAX}</span>
       </div>
 
-      {showCart && <p role="alert">{cartError}</p>}
+      {showCart && <p>{cartError}</p>}
 
       <button type="submit">Place order</button>
     </form>
