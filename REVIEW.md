@@ -48,3 +48,15 @@ why, and gives the sentence sent when changed or rejected.
 - **What decided it:** Measured in headless Chromium: typing `cap` slowly sent 3 requests (`c`, `ca`, `cap`) without the debounce and 1 request (`cap`) with it. Done means row 8: one request per text typed, or fewer with a debounce.
 - **Why:** Fewer requests, and fewer answers that have to be dropped. The cost is about 300 ms more before the results show, which the brief allows.
 - **Sentence sent:** "Add a 300 ms debounce to useProducts: wait 300 ms after the last keystroke before sending the fetch request, cancelling any pending timer in the effect cleanup."
+
+### 8. Plain Bootstrap classes chosen over react-bootstrap
+- **Where:** commit 779c5b6, `package.json` line 16
+- **Decision:** kept
+- **What decided it:** brief-ia4 C1 (only the CSS framework as new dependency) and C3 (labels stay `<label>`, buttons stay `<button>`). Checks query by role and text.
+- **Why:** react-bootstrap would add an extra dependency and wrap inputs in custom abstractions, whereas plain Bootstrap 5.3.3 classes style native `<label>` and `<button>` elements directly as required.
+
+### 9. Bootstrap 5.3.3 as the one CSS framework, installed from npm
+- **Where:** commit 779c5b6, `package.json` line 16; `src/main.jsx` line 3
+- **Decision:** kept
+- **What decided it:** Done means row 13 (`git diff 9386479 -- package.json vite.config.js` shows only the `bootstrap` line; `vite.config.js` is unchanged) and row 19 (checked in headless Chromium with the network blocked: styled, no sideways scroll at 360, 768 or 1280 px, smallest button 45.2 px, 1, 2 and 3 product columns)
+- **Why:** The framework comes from npm, so the page still styles offline, as brief-ia4 C1 asks. The Bootstrap import comes before `index.css`. No HTML element was changed; labels and buttons stay as they were.

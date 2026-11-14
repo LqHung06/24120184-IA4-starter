@@ -84,3 +84,11 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** The assistant recommended (a): plain Bootstrap 5.3.3 classes without react-bootstrap, because react-bootstrap adds an extra package (violating brief-ia4 C1) and wraps inputs in component abstractions instead of native elements (violating C3). Recommendation accepted.
 - **Changed:** none
 - **Rejected:** none
+
+## 10. Install Bootstrap 5.3.3 from npm
+- **Commit before:** 2aeffa8
+- **Commit after:** 779c5b6
+- **Request:** "Install Bootstrap 5.3.3 via npm and import its stylesheet in src/main.jsx. Do not add any other dependencies or change other files."
+- **Result:** package.json gained \"bootstrap\": \"5.3.3\" at line 16, package-lock.json updated, src/main.jsx line 3 imported bootstrap/dist/css/bootstrap.min.css. Tests: 19 of 19 pass, lint silent.
+- **Changed:** none
+- **Rejected:** none
