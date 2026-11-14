@@ -36,3 +36,19 @@ Tool: Claude Code (Claude Haiku 5.5 - High)
 - **Result:** Created src/App.jsx, src/useProducts.js, src/format.js, src/components/SearchBox.jsx, ProductList.jsx, ProductCard.jsx, CartSummary.jsx; src/index.css styled list, cards and cart. Checks: 11 of 11 session 6 pass (C1–C11), lint silent. By hand, rows 4–10 and 12 pass; row 11 checked in code.
 - **Changed:** none
 - **Rejected:** none
+
+## 4. Wishlist (W1–W5)
+- **Commit before:** 6d579c1
+- **Commit after:** bd8c67a
+- **Request:** "Implement part W of brief-ia4.md according to the approved plan (WishlistContext with one provider, ProductCard reads through useWishlist, the Saved count computed). Do not do parts F and C yet."
+- **Result:** Created src/WishlistContext.jsx (one provider, useWishlist hook, memoized context value), src/components/Header.jsx (header with h1 Shop and "Saved: N"), src/components/SavedPanel.jsx; changed src/App.jsx (one WishlistProvider around Header and main; h1 moved into Header) and src/components/ProductCard.jsx (Save button with aria-pressed, reads the hook). Checks: I1–I3 pass; 11 session 6 checks pass; I4–I8 fail as expected (form not built); lint silent.
+- **Changed:** none
+- **Rejected:** none
+
+## 5. Visible pressed style for the Save button
+- **Commit before:** bd8c67a
+- **Commit after:** 1a31580
+- **Request:** "Add a clear visual style for aria-pressed=\"true\" so users can recognize saved products without opening DevTools. Keep the button name \"Save\", the aria-pressed attribute, keyboard access and a minimum button height of 44 px. Change only what is necessary."
+- **Result:** Exactly line 6 added to src/index.css: button[aria-pressed="true"] with dark background, white bold text. Cap's pressed Save measured at 44 px high; an unpressed Save stays transparent/light. Checks I1–I3 pass; lint silent.
+- **Changed:** the pressed Save button now has a visible dark style. Reason: in row 14 the pressed Save looked identical to an unpressed one.
+- **Rejected:** none
